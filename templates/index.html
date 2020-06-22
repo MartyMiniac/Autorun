@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css') }}">
+    <title>Codex</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="head">
+            <h1 class="title">CODEX</h1>
+            <h1 class="subtitle">We code. We explore</h1>
+        </div>
+        <br>
+        <br>
+        <div class="inputform">
+            <form action="/" method="POST">
+                <input type="text" name="regno" class="regnoinput" size="100" required placeholder="Enter Your Registration Number">
+                <br>
+                <input type="text" name="url" class="urlinput" size="100" required placeholder="Enter Your Repo URL">
+                <br>
+                <br>
+                <input type="submit" class="submitbutton" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

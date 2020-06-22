@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css') }}">
+    <title>Codex</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="head">
+            <h1 class="title">CODEX</h1>
+            <h1 class="subtitle">We code. We explore</h1>
+        </div>
+        <br>
+        <br>
+        <div class="tableform">
+            <p class="inforegno">Registration Number : {{ regno }}</p>
+            <table class="outputtable">
+                <tr>
+                    <th>File Name</th>
+                    <th>Output</th>
+                </tr>
+                {% for x,y in js.items() %}
+                    <tr>
+                        <td>{{ x }}</td>
+                        <td>{{ y }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
