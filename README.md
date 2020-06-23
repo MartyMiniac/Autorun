@@ -19,7 +19,7 @@ Here you need to enter the registration number of the candidate and the url of t
 <br>
 Registration number is kinda unique identifier to identify you.
 
-### Audio Listening Page
+### Output Page
 
 ![Image showing the Result](https://github.com/MartyMiniac/Autorun/blob/master/images/result.JPG "Result Page")
 
