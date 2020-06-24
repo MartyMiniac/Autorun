@@ -2,6 +2,7 @@ import os
 import base64
 import requests
 import json
+import time
 
 url = "https://judge0.p.rapidapi.com/submissions?base64_encoded=true"
 headers = { 
@@ -10,7 +11,19 @@ headers = {
     'content-type': "application/json",
     'accept': "application/json"
     }
-
+dis={}
+dis['.c']=50
+dis['.cpp']=54
+dis['.cs']=51
+dis['.exe']=44
+dis['.java']=62
+dis['.js']=63
+dis['.kt']=78
+dis['.m']=79
+dis['.py']=71
+dis['.rb']=72
+dis['.rs']=73
+dis['.vb']=84
 
 def base_64_encoder(s):
     outp=base64.b64encode(bytes(s,'utf-8'))
@@ -18,8 +31,8 @@ def base_64_encoder(s):
     ans=ans[2:len(ans)-1]
     return ans
 
-def check_c_string(base64_string):
-    payload = "{ \"language_id\": 50, \"source_code\": \"%s\\n\", \"stdin\": \"d29ybGQ=\\n\"}" % (base64_string)
+def check_c_string(base64_string,lang):
+    payload = "{ \"language_id\": 62, \"source_code\": \"%s\\n\"}" % (base64_string)
     response = requests.request("POST", url, data=payload, headers=headers)
     print(response.text)
     js=json.loads(response.text)
@@ -31,39 +44,32 @@ def check_c_string(base64_string):
 
 
 
-def runmain(dir,name):
+def runmain(dir):
     arr=os.listdir(dir)
-    abdir=os.path.abspath("app.py")
-    abdir=str(abdir)[0:len(abdir)-6]
-    abdir=abdir+'outputs/'+name+'/'
-    os.system('mkdir "'+abdir+'"')
-        
+    outp={}
+    print(arr)
     for s in arr:
-        pt=os.path.splitext(s)
         ext=os.path.splitext(s)[1]
-        if ext == ".java":
-            runjava(dir+'/'+s,pt[0],abdir,name)
-        
-        if ext == ".cpp":
-            runcpp(dir+'/'+s,pt[0],abdir,name)
-        
-        if ext == ".c":
-            runc(dir+'/'+s,pt[0],abdir,name)
+        print(ext)
+        if ext in dis:
+            langid=dis[ext]
+            f=open(dir+'/'+s,'r')
+            scode=f.read()
+            b64=base_64_encoder(scode)
+            token=check_c_string(b64,langid)
+            outp[s]=get_output(token)
+    return outp
 
-        if ext == ".py":
-            runpy(dir+'/'+s,pt[0],abdir,name)
-    return abdir
+def get_output(token):
+    time.sleep(5)
 
-def runjava(dir, name, abdir, sname):
-    os.system('java "'+dir+'" > "'+abdir+name+'.txt"')
+    url = "https://judge0.p.rapidapi.com/submissions/"+token
 
-def runcpp(dir, name, abdir, sname):
-    os.system('g++ -o main "'+dir+'"')
-    os.system('./main > "'+abdir+name+'.txt"')
+    headers = {
+        'x-rapidapi-host': "judge0.p.rapidapi.com",
+        'x-rapidapi-key': "xxx"
+        }
 
-def runc(dir, name, abdir, sname):
-    os.system('g++ -o main "'+dir+'"')
-    os.system('./main > "'+abdir+name+'.txt"')
+    response = requests.request("GET", url, headers=headers)
 
-def runpy(dir, name, abdir, sname):
-    os.system('py "'+dir+'" > "'+abdir+name+'.txt"')
+    return response.text
