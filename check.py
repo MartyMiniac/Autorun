@@ -1,6 +1,7 @@
 import os
 import base64
 import requests
+import json
 
 url = "https://judge0.p.rapidapi.com/submissions?base64_encoded=true"
 headers = { 
@@ -21,7 +22,11 @@ def check_c_string(base64_string):
     payload = "{ \"language_id\": 50, \"source_code\": \"%s\\n\", \"stdin\": \"d29ybGQ=\\n\"}" % (base64_string)
     response = requests.request("POST", url, data=payload, headers=headers)
     print(response.text)
-    return response.text
+    js=json.loads(response.text)
+    try:
+        return js['token']
+    except:
+        return None
 
 
 
