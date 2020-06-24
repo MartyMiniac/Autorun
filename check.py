@@ -32,7 +32,7 @@ def base_64_encoder(s):
     return ans
 
 def check_c_string(base64_string,lang):
-    payload = "{ \"language_id\": 62, \"source_code\": \"%s\\n\"}" % (base64_string)
+    payload = "{ \"language_id\": "+str(lang)+", \"source_code\": \"%s\\n\"}" % (base64_string)
     response = requests.request("POST", url, data=payload, headers=headers)
     print(response.text)
     js=json.loads(response.text)
