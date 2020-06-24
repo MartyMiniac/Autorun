@@ -1,10 +1,8 @@
-import os
+import json
 
-def output(dir):    
-    arr=os.listdir(dir)
+def output(arr):
     dic={}
-    for s in arr:
-        f=open(dir+'\\'+s,'r')
-        val=f.readlines()
-        dic[s]=val
+    for a,b in arr.items():
+        js=json.loads(b)
+        dic[a]=js['stdout']
     return dic

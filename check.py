@@ -3,6 +3,7 @@ import base64
 import requests
 import json
 import time
+#replace xxx in x-rapidapi-key with your own key
 
 url = "https://judge0.p.rapidapi.com/submissions?base64_encoded=true"
 headers = { 
