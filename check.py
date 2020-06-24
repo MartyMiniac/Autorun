@@ -1,4 +1,30 @@
 import os
+import base64
+import requests
+
+url = "https://judge0.p.rapidapi.com/submissions?base64_encoded=true"
+headers = { 
+    'x-rapidapi-host': 'judge0.p.rapidapi.com',
+    'x-rapidapi-key': "xxx",
+    'content-type': "application/json",
+    'accept': "application/json"
+    }
+
+
+def base_64_encoder(s):
+    outp=base64.b64encode(bytes(s,'utf-8'))
+    ans=str(outp)
+    ans=ans[2:len(ans)-1]
+    return ans
+
+def check_c_string(base64_string):
+    payload = "{ \"language_id\": 50, \"source_code\": \"%s\\n\", \"stdin\": \"d29ybGQ=\\n\"}" % (base64_string)
+    response = requests.request("POST", url, data=payload, headers=headers)
+    print(response.text)
+    return response.text
+
+
+
 
 def runmain(dir,name):
     arr=os.listdir(dir)
