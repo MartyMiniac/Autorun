@@ -14,8 +14,8 @@
         </div>
         <br>
         <br>
-        <div class="inputform">
-            <form action="/" method="POST">
+        <div class="inputform" id="inputdiv">
+            <form id="sendurlform">
                 <input type="text" name="regno" class="regnoinput" size="100" required placeholder="Enter Your Registration Number">
                 <br>
                 <input type="text" name="url" class="urlinput" size="100" required placeholder="Enter Your Repo URL">
@@ -24,6 +24,98 @@
                 <input type="submit" class="submitbutton" value="Submit">
             </form>
         </div>
+        <div class="tableform" id="outputdiv">
+            <table class="outputtable" id="posts">
+            </table>
+        </div>
     </div>
 </body>
+<script type="text/javascript">
+    document.getElementById("inputdiv").style.display = "block";
+    document.getElementById("outputdiv").style.display = "none";
+    window.addEventListener( "load", function ()
+    {
+        function sendData()
+        {
+            const XHR = new XMLHttpRequest();
+    
+            // Bind the FormData object and the form element
+            const FD = new FormData( form );
+    
+            // Define what happens on successful data submission
+            XHR.addEventListener( "load", function(event)
+            {
+                var response= event.target.responseText;
+                aftersubmit(response);
+            } );
+    
+            // Define what happens in case of error
+            XHR.addEventListener( "error", function( event )
+            {
+                alert( 'Oops! Something went wrong.' );
+            } );
+    
+            // Set up our request
+            XHR.open( "POST", "/" );
+    
+            // The data sent is what the user provided in the form
+            XHR.send( FD );
+        }
+    
+        // Access the form element...
+        const form = document.getElementById( "sendurlform" );
+    
+        // ...and take over its submit event.
+        form.addEventListener( "submit", function ( event )
+        {
+            event.preventDefault();
+    
+            sendData();
+        } );
+    } );  
+    async function aftersubmit(response)
+    {  
+        document.getElementById("inputdiv").style.display = "none";
+        document.getElementById("outputdiv").style.display = "block";
+       var jsonData = JSON.parse(response);
+
+        var t="<tr><th>File Name</th><th>Output</th></tr>";
+        
+        for(var i in jsonData)
+        {
+            await sleep(4000);
+            var each=jsonData[i];
+            var xhr = new XMLHttpRequest();
+            xhr.addEventListener("readystatechange", function ()
+            {
+                if (this.readyState === this.DONE)
+                {
+                    //console.log(this.responseText);
+                    output=this.responseText;
+                    outputjs=JSON.parse(output)            
+                    var tr = "<tr>";
+                    tr += "<td>"+outputjs.name+"</td>";
+                    tr += "<td>"+outputjs.msg+"</td>";
+                    tr += "</tr>";            
+                    t += tr;            
+                    document.getElementById("posts").innerHTML = t;
+                }
+            });
+            xhr.open("POST", "/output", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            var output=""; 
+            xhr.send(JSON.stringify({
+                name: each.name,
+                code: each.code,
+                ext: each.ext
+            }));
+            
+            //console.log(output);
+        }
+    }
+    function sleep(ms)
+    {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+</script>
 </html>

@@ -15,6 +15,7 @@ headers = {
 dis={}
 dis['.c']=50
 dis['.cpp']=54
+dis['.CPP']=54
 dis['.cs']=51
 dis['.exe']=44
 dis['.java']=62
@@ -35,7 +36,6 @@ def base_64_encoder(s):
 def check_c_string(base64_string,lang):
     payload = "{ \"language_id\": "+str(lang)+", \"source_code\": \"%s\\n\"}" % (base64_string)
     response = requests.request("POST", url, data=payload, headers=headers)
-    print(response.text)
     js=json.loads(response.text)
     try:
         return js['token']
@@ -61,8 +61,20 @@ def runmain(dir):
             outp[s]=get_output(token)
     return outp
 
+def checkapi(b64, ext):
+    langid=dis[ext]
+    token=check_c_string(b64,langid)
+    outp=get_output(token)
+    js=json.loads(outp)
+    try:
+        print(js['stdout'])
+        return js['stdout']
+    except:
+        print(js['error'])
+        return js['error']
+
 def get_output(token):
-    time.sleep(5)
+    time.sleep(10)
 
     url = "https://judge0.p.rapidapi.com/submissions/"+token
 

@@ -14,31 +14,14 @@
         </div>
         <br>
         <br>
-        <div class="inputform" id="timerdiv">
+        <div class="inputform">
             <h2 class="subtitle">Please wait while your Code Compiles</h2>
             <br>
             <div class="subtitle"id="time"></div>
         </div>
-        <div class="tableform" id="outputdiv">
-            <p class="inforegno">Registration Number : {{ regno }}</p>
-            <table class="outputtable">
-                <tr>
-                    <th>File Name</th>
-                    <th>Output</th>
-                </tr>
-                {% for x,y in js.items() %}
-                    <tr>
-                        <td>{{ x }}</td>
-                        <td>{{ y }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
     </div>
 </body>
 <script type="text/javascript">
-    document.getElementById("timerdiv").style.display = "block";
-    document.getElementById("outputdiv").style.display = "none";
     var timeLeft = 60;
     var elem = document.getElementById('time');
     var timerId = setInterval(countdown, 1000);
