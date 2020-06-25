@@ -5,7 +5,7 @@ Web server to help in admission of club members in Codex
 
 ## What is it ?
 It is a webserver coded using flask that accepts a registration number and the url of the github repo where the candidate made its submissions.<br>
-`Currently I am facing some issues in getting it working on heroku however it is working fine when working locally`
+
 
 ## How to Use ?
 
